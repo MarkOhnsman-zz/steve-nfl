@@ -47,13 +47,13 @@ function FantasyFootballService(callback) {
   }
 
 
-  this.getPlayersByName = function(gName, cb) {
-    var namesList = playersData.filter(function (player){
-      if (player.fullname.toUpperCase().includes(gName)){
+  this.getPlayersByName = function (gName, cb) {
+    var namesList = playersData.filter(function (player) {
+      if (player.fullname.toUpperCase().includes(gName)) {
         return true;
       }
     });
-       cb(namesList)
+    cb(namesList)
 
   }
 
@@ -69,59 +69,33 @@ function FantasyFootballService(callback) {
     cb(teamData)
   }
 
-  this.checkTeamForPlayer = function checkTeamForPlayer(playerId, cb) {
-    var dupe = false
-
+  this.checkTeamForPlayer = function checkTeamForPlayer(playerId) {
     for (let i = 0; i < teamData.length; i++) {
       const team = teamData[i];
       if (team.id == playerId) {
-        dupe = true
+        return true
       }
     }
-    if (dupe == false) {
-      cb(playerId)
-    }
-    else {
-      cb(0)
-    }
+    return false
   }
 
 
-  this.checkTeamForPos = function checkTeamForPos(playerId, cb) {
+  this.checkTeamForPos = function checkTeamForPos(playerId) {
     //debugger
     if (teamData.length == 0) {
-      cb(playerId)
+      return false
     }
     else {
-      //var dupe = false
-
-      var attemptPos = " "
-      // playersData.find(function(playerId) {
-      //   attemptPos = playerId.position
-      for (let i = 0; i < playersData.length; i++) {
-        const player = playersData[i];
-        if (player.id == playerId) {
-          attemptPos = player.position
-        }
-        //attemptPos = player
-
-      }
-      console.log(attemptPos)
-      // return playerId.position == playerId
-      //})
-      //debugger
-      //var teamPos
-      //teamData.find(function (attemptPos){
-      //teamData.position == attemptPos
+      var player = playersData.find(function(player){
+        return player.id == playerId
+      })    
       for (let i = 0; i < teamData.length; i++) {
-        const team = teamData[i];
-        //debugger
-        if (team.position != attemptPos) {
-          cb(playerId)
-        } else {
-          cb('0p')
+        const tPlayer = teamData[i];
+        if (tPlayer.position == player.position) {
+         return true
         }
       }
+      return false
     }
   }
 
